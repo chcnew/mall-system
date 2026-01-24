@@ -1,0 +1,68 @@
+<!--components/product-card/product-card.wxml-->
+<view class="product-card" bindtap="onProductClick">
+  <view class="product-image-container">
+    <image 
+      class="product-image" 
+      src="{{product.cover || defaultImage}}" 
+      mode="aspectFill"
+      lazy-load="{{true}}"
+      binderror="onImageError"
+    ></image>
+    <!-- 销售标签 -->
+    <view class="product-tags" wx:if="{{product.isNew || product.isHot}}">
+      <view class="tag tag-new" wx:if="{{product.isNew}}">新品</view>
+      <view class="tag tag-hot" wx:if="{{product.isHot}}">热销</view>
+    </view>
+    <!-- 已售罄 -->
+    <view class="sold-out" wx:if="{{!isInSale(product) || !hasStock(product)}}">
+      <view class="sold-out-text">已售罄</view>
+    </view>
+  </view>
+  
+  <view class="product-info">
+    <view class="product-name ellipsis-2">{{product.name}}</view>
+    <view class="product-desc ellipsis" wx:if="{{product.subtitle}}">
+      {{product.subtitle}}
+    </view>
+    
+    <view class="product-bottom">
+      <view class="product-price">
+        <text class="current-price">{{formatPrice(product.price)}}</text>
+        <text class="original-price" wx:if="{{product.originalPrice && product.originalPrice > product.price}}">
+          {{formatPrice(product.originalPrice)}}
+        </text>
+      </view>
+      
+      <view class="product-actions">
+        <!-- 收藏按钮 -->
+        <view 
+          class="favorite-btn" 
+          bindtap="onToggleFavorite"
+          wx:if="{{showFavorite}}"
+          data-product="{{product}}"
+        >
+          <image 
+            class="favorite-icon" 
+            src="/images/icons/favorite-empty.png"
+            wx:if="{{!product.isFavorite}}"
+          ></image>
+          <image 
+            class="favorite-icon favorite-active" 
+            src="/images/icons/favorite-full.png"
+            wx:if="{{product.isFavorite}}"
+          ></image>
+        </view>
+        
+        <!-- 加入购物车按钮 -->
+        <view 
+          class="add-cart-btn" 
+          wx:if="{{showCart && isInSale(product) && hasStock(product)}}"
+          bindtap="onAddToCart"
+          data-product="{{product}}"
+        >
+          <image class="cart-icon" src="/images/icons/cart.png"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

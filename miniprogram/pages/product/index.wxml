@@ -1,0 +1,195 @@
+<!--pages/product/index.wxml-->
+<view class="container">
+  <!-- 商品主图 -->
+  <view class="product-images" bindtap="onPreviewImage" data-url="{{product.cover}}">
+    <image
+      class="main-image"
+      src="{{product.cover || '/images/default-product.png'}}"
+      mode="aspectFill"
+      lazy-load="{{true}}"
+    ></image>
+  </view>
+
+  <!-- 商品基本信息 -->
+  <view class="product-basic">
+    <view class="price-section">
+      <view class="price-main">
+        <text class="current-price">¥{{getCurrentPrice()}}</text>
+        <text class="original-price" wx:if="{{isDiscount()}}">¥{{formatPrice(getOriginalPrice())}}</text>
+      </view>
+      <view class="sold-info">
+        <text>已售 {{product.sales || 0}}件</text>
+        <text wx:if="{{product.stock > 0}}">库存{{product.stock}}件</text>
+        <text wx:else>已售罄</text>
+      </view>
+    </view>
+
+    <view class="product-meta">
+      <text class="tag tag-hot" wx:if="{{product.isHot}}">热销</text>
+      <text class="tag tag-new" wx:if="{{product.isNew}}">新品</text>
+      <text class="product-name">{{product.name}}</text>
+      <view class="product-subtitle" wx:if="{{product.subtitle}}">
+        {{product.subtitle}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 规格选择区域 -->
+  <view class="sku-section" wx:if="{{skus.length > 0}}">
+    <view class="section-title">
+      <text>规格选择</text>
+    </view>
+
+    <view class="sku-container">
+      <block wx:for="{{skus}}" wx:for-item="spec" wx:key="id">
+        <view class="sku-block">
+          <view class="block-title">{{product.specs}}}</view>
+          <view class="sku-options">
+            <view 
+              class="sku-option"
+              wx:for="{{item.skus}}" 
+              wx:key="id"
+              bindtap="onSpecChange"
+              data-spec-key="{{product.specs}}"
+              data-spec-value="{{item.value}}"
+              class="sku-{{selectedSpecs[product.specs] === item.value ? 'active' : ''}}"
+            >
+              <text>{{item.value}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 数量选择 -->
+  <view class="quantity-section">
+    <view class="section-title">
+      <text>购买数量</text>
+    </view>
+
+    <view class="quantity-control">
+      <view class="qty-btn" bindtap="onDecrease">
+        <text class="btn-icon">-</text>
+      </view>
+      <view class="qty-value">{{quantity}}</view>
+      <view class="qty-btn" bindtap="onIncrease">
+        <text class="btn-icon">+</text>
+      </view>
+    </view>
+
+    <!-- 库存提示 -->
+    <view class="stock-hint" wx:if="{{product.stock > 0 && product.stock < 10}}">
+      <text>仅剩 {{product.stock}}件，手慢抢购哦</text>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <!-- 收藏按钮 -->
+    <view class="action-btn favorite-btn" bindtap="onToggleFavorite">
+      <image 
+        class="btn-icon favorite-icon"
+        src="{{isFavorite ? '/images/icons/favorite-full.png' : '/images/icons/favorite-empty.png'}}"
+      ></image>
+    </view>
+
+    <!-- 加入购物车 -->
+    <view class="action-btn cart-btn" bindtap="onAddToCart" wx:if="{{canBuy()}}">
+      <image class="btn-icon" src="/images/icons/cart-white.png"></image>
+      <text>加入购物车</text>
+    </view>
+
+    <!-- 立即购买 -->
+    <view class="action-btn buy-btn primary" bindtap="onBuyNow" wx:if="{{canBuy()}}">
+      <text>立即购买</text>
+    </view>
+  </view>
+
+  <!-- 商品图片列表 -->
+  <view class="images-section" wx:if="{{product.images && product.images.length > 0}}">
+    <view class="section-title">
+      <text>商品详情</text>
+    </view>
+    <view class="image-list">
+      <view 
+        class="image-item"
+        wx:for="{{product.images}}" 
+        wx:key="*this"
+        bindtap="onPreviewImage"
+        data-url="{{item}}"
+      >
+        <image
+          class="image"
+          src="{{item}}"
+          mode="aspectFill"
+          lazy-load="{{true}}"
+        ></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <image class="loading-icon" src="/images/icons/loading.gif"></image>
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>
+
+<!-- 规格选择弹窗 -->
+<view class="sku-modal-mask" bindtap="onCloseSkuModal" wx:if="{{showSkuModal}}">
+  <view class="sku-modal" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">选择规格</text>
+      <view class="modal-close" bindtap="onCloseSkuModal">
+        <image class="close-icon" src="/images/icons/close.png"></image>
+      </view>
+    </view>
+
+    <view class="modal-content">
+      <!-- 当前选中信息 -->
+      <view class="selected-info">
+        <text class="info-label">已选：</text>
+        <view class="info-content">
+          <block wx:if="{{Object.keys(selectedSpecs).length > 0}}">
+            <block wx:for="{{selectedSpecs}}" wx:key="*this">
+              <text class="spec-item">{{product.specs}}: {{item}}</text>
+            </block>
+          </block>
+          <text class="info-empty" wx:else>请选择规格</text>
+        </view>
+      </view>
+
+      <!-- 规格选择 -->
+      <view class="sku-selector">
+        <block wx:for="{{skus}}" wx:for-item="spec" wx:key="id">
+          <view class="sku-group">
+            <view class="group-title">{{product.specs}}</view>
+            <view class="sku-list">
+              <view
+                class="sku-item {{selectedSpecs[product.specs] === item.value ? 'selected' : ''}}"
+                wx:for="{{item.skus}}"
+                wx:key="id"
+                bindtap="onSpecChange"
+                data-spec-key="{{product.specs}}"
+                data-spec-value="{{item.value}}"
+              >
+                <text class="sku-text">{{item.value}}</text>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+
+      <!-- 底部操作 -->
+      <view class="modal-footer">
+        <view class="modal-close-btn" bindtap="onCloseSkuModal">
+          <text>取消</text>
+        </view>
+        <view class="modal-confirm-btn" bindtap="onConfirmSku">
+          <text>确认</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

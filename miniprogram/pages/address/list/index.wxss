@@ -1,0 +1,144 @@
+.address-list {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 140rpx;
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #999;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.empty-icon {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.content {
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.address-card {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  overflow: hidden;
+}
+
+.address-card.default {
+  border: 2rpx solid #ff6b6b;
+}
+
+.address-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-right: 20rpx;
+}
+
+.phone {
+  font-size: 26rpx;
+  color: #666;
+  margin-right: 12rpx;
+}
+
+.default-tag {
+  font-size: 20rpx;
+  color: #ff6b6b;
+  border: 1rpx solid #ff6b6b;
+  border-radius: 4rpx;
+  padding: 2rpx 8rpx;
+}
+
+.address-detail {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+}
+
+.address-actions {
+  display: flex;
+  gap: 20rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.action-btn {
+  flex: 1;
+  text-align: center;
+  padding: 12rpx 0;
+  font-size: 24rpx;
+  color: #666;
+  border-radius: 8rpx;
+}
+
+.action-btn.delete {
+  color: #ff6b6b;
+}
+
+.address-card.default .address-content {
+  position: relative;
+}
+
+.address-card.default .address-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 60rpx solid #ff6b6b;
+  border-right: 60rpx solid transparent;
+}
+
+.address-card.default .address-content::before {
+  content: '默认';
+  position: absolute;
+  top: 8rpx;
+  left: 8rpx;
+  font-size: 18rpx;
+  color: #fff;
+  font-weight: 600;
+}
+
+.add-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #ff6b6b 0%, #feca57 100%);
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 600;
+  text-align: center;
+  padding: 28rpx;
+  padding-bottom: calc(28rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.1);
+}

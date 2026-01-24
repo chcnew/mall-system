@@ -1,0 +1,70 @@
+<view class="order-list">
+  <view class="tabs">
+    <view 
+      class="tab-item {{activeTab === item.id ? 'active' : ''}}" 
+      wx:for="{{tabs}}" 
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onTabClick"
+    >
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+
+  <view class="content">
+    <view wx:if="{{loading}}" class="loading-wrapper">
+      <text>加载中...</text>
+    </view>
+
+    <view wx:elif="{{filteredOrders.length === 0}}" class="empty">
+      <text>暂无订单</text>
+    </view>
+
+    <view wx:else class="orders">
+      <view 
+        class="order-card" 
+        wx:for="{{filteredOrders}}" 
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onOrderClick"
+      >
+        <view class="order-header">
+          <text class="order-no">订单号：{{item.order_no}}</text>
+          <text class="order-status">{{item.status_text}}</text>
+        </view>
+
+        <view class="products">
+          <view class="product-item" wx:for="{{item.products}}" wx:for-item="product" wx:key="id">
+            <image class="product-cover" src="{{product.cover}}" mode="aspectFill"></image>
+            <view class="product-info">
+              <view class="product-name">{{product.name}}</view>
+              <view class="product-sku">{{product.sku_name}}</view>
+              <view class="product-bottom">
+                <text class="product-price">¥{{product.price}}</text>
+                <text class="product-quantity">x{{product.quantity}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="order-footer">
+          <text class="amount-text">实付款：</text>
+          <text class="amount-value">¥{{item.pay_amount}}</text>
+        </view>
+
+        <view class="order-actions" catchtap="preventBubble">
+          <view wx:if="{{item.status === 1}}" class="action-buttons">
+            <view class="btn secondary" data-id="{{item.id}}" bindtap="onCancelOrder">取消订单</view>
+            <view class="btn primary" data-id="{{item.id}}" bindtap="onPay">立即支付</view>
+          </view>
+          <view wx:if="{{item.status === 3}}" class="action-buttons">
+            <view class="btn primary" data-id="{{item.id}}" bindtap="onConfirmReceipt">确认收货</view>
+          </view>
+          <view wx:if="{{item.status >= 4}}" class="action-buttons">
+            <view class="btn primary" data-id="{{item.id}}" bindtap="onBuyAgain">再次购买</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

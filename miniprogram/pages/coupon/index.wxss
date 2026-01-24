@@ -1,0 +1,154 @@
+.coupon {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.tabs {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  display: flex;
+  justify-content: space-around;
+  padding: 20rpx 0;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+  z-index: 10;
+}
+
+.tab-item {
+  font-size: 28rpx;
+  color: #666;
+  padding: 8rpx 24rpx;
+  border-radius: 32rpx;
+  position: relative;
+}
+
+.tab-item.active {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 4rpx;
+  background: #ff6b6b;
+  border-radius: 2rpx;
+}
+
+.content {
+  padding: 20rpx;
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  color: #999;
+}
+
+.coupon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.coupon-card {
+  display: flex;
+  background: #fff;
+  border-radius: 12rpx;
+  overflow: hidden;
+  position: relative;
+}
+
+.coupon-card::before,
+.coupon-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20rpx;
+  height: 20rpx;
+  background: #f5f5f5;
+  border-radius: 50%;
+}
+
+.coupon-card::before {
+  left: 240rpx;
+}
+
+.coupon-card::after {
+  right: 160rpx;
+}
+
+.coupon-card.received {
+  opacity: 0.6;
+}
+
+.coupon-left {
+  flex: 1;
+  padding: 30rpx;
+  border-right: 2rpx dashed #e0e0e0;
+  position: relative;
+}
+
+.amount-wrapper {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 12rpx;
+}
+
+.amount {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #ff6b6b;
+}
+
+.condition {
+  font-size: 22rpx;
+  color: #999;
+  margin-left: 8rpx;
+}
+
+.name {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.coupon-right {
+  width: 160rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(90deg, #ff6b6b 0%, #feca57 100%);
+  color: #fff;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.coupon-right.disabled {
+  background: #ccc;
+}
+
+.my-coupon .coupon-right {
+  background: linear-gradient(90deg, #ff6b6b 0%, #feca57 100%);
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  color: #999;
+  font-size: 28rpx;
+}

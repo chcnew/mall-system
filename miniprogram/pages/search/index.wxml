@@ -1,0 +1,86 @@
+<view class="search">
+  <view class="search-bar">
+    <view class="search-input-wrapper">
+      <image class="search-icon" src="/images/icons/search.png"></image>
+      <input 
+        class="search-input" 
+        placeholder="搜索商品" 
+        value="{{keyword}}"
+        bindinput="onInput"
+        confirm-type="search"
+        bindconfirm="onSearch"
+        focus="{{true}}"
+      ></input>
+      <image wx:if="{{keyword}}" class="clear-icon" src="/images/icons/close.png" bindtap="onClearInput"></image>
+    </view>
+    <view class="search-btn" bindtap="onSearch">搜索</view>
+  </view>
+
+  <view wx:if="{{hasSearched}}" class="search-results">
+    <view wx:if="{{loading}}" class="loading-wrapper">
+      <text>加载中...</text>
+    </view>
+
+    <view wx:elif="{{searchResults.length > 0}}" class="results-list">
+      <view 
+        class="result-item" 
+        wx:for="{{searchResults}}" 
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onProductClick"
+      >
+        <image class="result-cover" src="{{item.cover}}" mode="aspectFill"></image>
+        <view class="result-info">
+          <view class="result-name">{{item.name}}</view>
+          <view class="result-price">¥{{item.price}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty">
+      <image class="empty-icon" src="/images/empty.png"></image>
+      <text class="empty-text">没有找到相关商品</text>
+    </view>
+  </view>
+
+  <view wx:else class="search-content">
+    <view wx:if="{{hotKeywords.length > 0}}" class="section">
+      <view class="section-header">
+        <text class="section-title">热门搜索</text>
+      </view>
+      <view class="keywords-list">
+        <view 
+          class="keyword-item" 
+          wx:for="{{hotKeywords}}" 
+          wx:key="index"
+          data-keyword="{{item}}"
+          bindtap="onKeywordClick"
+        >
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{historyKeywords.length > 0}}" class="section">
+      <view class="section-header">
+        <text class="section-title">搜索历史</text>
+        <image class="clear-icon" src="/images/icons/delete.png" bindtap="onClearHistory"></image>
+      </view>
+      <view class="keywords-list">
+        <view 
+          class="keyword-item" 
+          wx:for="{{historyKeywords}}" 
+          wx:key="index"
+          data-keyword="{{item}}"
+          bindtap="onKeywordClick"
+        >
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{hotKeywords.length === 0 && historyKeywords.length === 0}}" class="empty">
+      <text>暂无数据</text>
+    </view>
+  </view>
+</view>

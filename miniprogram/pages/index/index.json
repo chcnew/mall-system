@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "微信商城",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {}
+}

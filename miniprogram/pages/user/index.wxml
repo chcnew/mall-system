@@ -1,0 +1,138 @@
+<!--pages/user/index.wxml-->
+<view class="container">
+  <!-- 未登录状态 -->
+  <view class="not-logged-in" wx:if="{{!isLoggedIn}}">
+    <view class="login-hint">
+      <image class="login-icon" src="/images/icons/login.png"></image>
+      <text class="login-text">登录后享受更多服务</text>
+    </view>
+    <view class="login-actions">
+      <button class="btn btn-primary btn-lg" bindtap="onLogin">立即登录</button>
+    </view>
+  </view>
+
+  <!-- 已登录状态 -->
+  <view class="logged-in" wx:else>
+    <!-- 用户信息 -->
+    <view class="user-info-section">
+      <view class="user-avatar-container">
+        <image class="user-avatar" src="{{userInfo.avatar || '/images/default-avatar.png'}}"></image>
+        <image class="vip-badge" src="/images/icons/vip.png" wx:if="{{userInfo.vip}}"></image>
+      </view>
+      <view class="user-detail">
+        <text class="user-name">{{userInfo.nickname || '微信用户'}}</text>
+        <view class="user-meta">
+          <text class="user-phone" wx:if="{{userInfo.phone}}">{{userInfo.phone}}</text>
+          <text class="user-id" wx:else>未绑定手机号</text>
+        </view>
+      </view>
+      <view class="logout-btn" bindtap="onLogout">
+        <image class="logout-icon" src="/images/icons/logout.png"></image>
+      </view>
+    </view>
+
+    <!-- 会员信息 -->
+    <view class="member-section">
+      <view class="member-item" bindtap="onBalance">
+        <text class="member-label">余额</text>
+        <text class="member-value">¥{{userInfo.balance || '0.00'}}</text>
+      </view>
+      <view class="member-divider"></view>
+      <view class="member-item" bindtap="onPoints">
+        <text class="member-label">积分</text>
+        <text class="member-value">{{userInfo.points || 0}}</text>
+      </view>
+      <view class="member-divider"></view>
+      <view class="member-item" bindtap="onFavorite">
+        <text class="member-label">收藏</text>
+        <text class="member-value">12</text>
+      </view>
+    </view>
+
+    <!-- 订单管理 -->
+    <view class="orders-section">
+      <view class="section-header" bindtap="onOrderAll">
+        <text class="section-title">我的订单</text>
+        <view class="section-more">
+          <text class="more-text">全部订单</text>
+          <image class="arrow-icon" src="/images/icons/arrow-right.png"></image>
+        </view>
+      </view>
+      <view class="orders-grid">
+        <view class="order-item" bindtap="onOrderUnpaid">
+          <image class="order-icon" src="/images/icons/order-unpaid.png"></image>
+          <text class="order-label">待付款</text>
+          <view class="order-badge" wx:if="{{orderStats.unpaid > 0}}">{{orderStats.unpaid}}</view>
+        </view>
+        <view class="order-item" bindtap="onOrderUnshipped">
+          <image class="order-icon" src="/images/icons/order-unshipped.png"></image>
+          <text class="order-label">待发货</text>
+          <view class="order-badge" wx:if="{{orderStats.unshipped > 0}}">{{orderStats.unshipped}}</view>
+        </view>
+        <view class="order-item" bindtap="onOrderUnreceived">
+          <image class="order-icon" src="/images/icons/order-unreceived.png"></image>
+          <text class="order-label">待收货</text>
+          <view class="order-badge" wx:if="{{orderStats.unreceived > 0}}">{{orderStats.unreceived}}</view>
+        </view>
+        <view class="order-item" bindtap="onOrderCompleted">
+          <image class="order-icon" src="/images/icons/order-completed.png"></image>
+          <text class="order-label">已完成</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 功能菜单 -->
+    <view class="menu-section">
+      <view class="menu-item" bindtap="onFavorite">
+        <view class="menu-left">
+          <image class="menu-icon" src="/images/icons/favorite.png"></image>
+          <text class="menu-text">我的收藏</text>
+        </view>
+        <view class="menu-right">
+          <image class="arrow-icon" src="/images/icons/arrow-right.png"></image>
+        </view>
+      </view>
+      <view class="menu-item" bindtap="onAddress">
+        <view class="menu-left">
+          <image class="menu-icon" src="/images/icons/address.png"></image>
+          <text class="menu-text">收货地址</text>
+        </view>
+        <view class="menu-right">
+          <image class="arrow-icon" src="/images/icons/arrow-right.png"></image>
+        </view>
+      </view>
+      <view class="menu-item" bindtap="onCoupon">
+        <view class="menu-left">
+          <image class="menu-icon" src="/images/icons/coupon.png"></image>
+          <text class="menu-text">我的优惠券</text>
+        </view>
+        <view class="menu-right">
+          <image class="arrow-icon" src="/images/icons/arrow-right.png"></image>
+        </view>
+      </view>
+      <view class="menu-item" bindtap="onService">
+        <view class="menu-left">
+          <image class="menu-icon" src="/images/icons/service.png"></image>
+          <text class="menu-text">联系客服</text>
+        </view>
+        <view class="menu-right">
+          <image class="arrow-icon" src="/images/icons/arrow-right.png"></image>
+        </view>
+      </view>
+      <view class="menu-item" bindtap="onSettings">
+        <view class="menu-left">
+          <image class="menu-icon" src="/images/icons/settings.png"></image>
+          <text class="menu-text">设置</text>
+        </view>
+        <view class="menu-right">
+          <image class="arrow-icon" src="/images/icons/arrow-right.png"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部声明 -->
+  <view class="footer">
+    <text class="footer-text">微信商城小程序 © 2024</text>
+  </view>
+</view>

@@ -1,0 +1,152 @@
+.pay {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 160rpx;
+}
+
+.amount-card {
+  background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+  padding: 60rpx 30rpx;
+  text-align: center;
+  color: #fff;
+}
+
+.amount-label {
+  font-size: 26rpx;
+  opacity: 0.9;
+  margin-bottom: 20rpx;
+}
+
+.amount-value {
+  font-size: 60rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.order-no {
+  font-size: 24rpx;
+  opacity: 0.8;
+}
+
+.section {
+  background: #fff;
+  margin-top: 20rpx;
+  padding: 24rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.methods-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.method-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-radius: 12rpx;
+  transition: all 0.3s;
+}
+
+.method-item.active {
+  background: #f5f5f5;
+}
+
+.method-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-right: 20rpx;
+}
+
+.method-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.radio-icon {
+  width: 40rpx;
+  height: 40rpx;
+  border: 2rpx solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.method-item.active .radio-icon {
+  border-color: #ff6b6b;
+}
+
+.radio-checked {
+  width: 24rpx;
+  height: 24rpx;
+  background: #ff6b6b;
+  border-radius: 50%;
+}
+
+.tips {
+  background: #fff;
+  margin: 20rpx 24rpx;
+  padding: 24rpx;
+  border-radius: 12rpx;
+}
+
+.tip-item {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 1.8;
+  margin-bottom: 8rpx;
+}
+
+.tip-item:last-child {
+  margin-bottom: 0;
+}
+
+.btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  display: flex;
+  gap: 20rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.08);
+}
+
+.cancel-btn {
+  flex: 1;
+  height: 80rpx;
+  background: #f5f5f5;
+  border-radius: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.pay-btn {
+  flex: 2;
+  height: 80rpx;
+  background: linear-gradient(90deg, #ff6b6b 0%, #feca57 100%);
+  border-radius: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #fff;
+}
+
+.pay-btn.disabled {
+  opacity: 0.6;
+}

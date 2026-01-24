@@ -1,0 +1,73 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <view wx:if="{{loading}}" style="padding: 100rpx; text-align: center;">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:else>
+    <!-- 搜索框 -->
+    <view class="search-bar" bindtap="goToSearch">
+      <view class="search-input">
+        <text style="color: #999;">🔍</text>
+        <text class="search-text">搜索商品</text>
+      </view>
+    </view>
+
+    <!-- 轮播图 -->
+    <swiper
+      class="banner-swiper"
+      indicator-dots="{{true}}"
+      autoplay="{{true}}"
+      interval="3000"
+    >
+      <swiper-item wx:for="{{banners}}" wx:key="id">
+        <view class="banner-placeholder">轮播图 {{index + 1}}</view>
+      </swiper-item>
+    </swiper>
+
+    <!-- 分类入口 -->
+    <view class="categories-section" wx:if="{{categories.length > 0}}">
+      <view class="section-title">商品分类</view>
+      <view class="categories-grid">
+        <view
+          class="category-item"
+          wx:for="{{categories}}"
+          wx:key="id"
+          bindtap="onCategoryClick"
+          data-id="{{item.id}}"
+        >
+          <view class="category-placeholder">{{item.name}}</view>
+          <text class="category-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 热门推荐 -->
+    <view class="hot-section" wx:if="{{hotProducts.length > 0}}">
+      <view class="section-title">
+        <text>热门推荐</text>
+      </view>
+      <view class="products-list">
+        <view class="simple-product" wx:for="{{hotProducts}}" wx:key="id" bindtap="onProductClick" data-id="{{item.id}}">
+          <view class="product-placeholder">商品图</view>
+          <text class="product-name">{{item.name}}</text>
+          <text class="product-price">¥{{item.price}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 新品上市 -->
+    <view class="new-section" wx:if="{{newProducts.length > 0}}">
+      <view class="section-title">
+        <text>新品上市</text>
+      </view>
+      <view class="products-list">
+        <view class="simple-product" wx:for="{{newProducts}}" wx:key="id" bindtap="onProductClick" data-id="{{item.id}}">
+          <view class="product-placeholder">商品图</view>
+          <text class="product-name">{{item.name}}</text>
+          <text class="product-price">¥{{item.price}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

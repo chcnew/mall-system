@@ -1,0 +1,147 @@
+.category {
+  height: 100vh;
+  display: flex;
+}
+
+.loading-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  height: 100vh;
+}
+
+.category-left {
+  width: 200rpx;
+  height: 100%;
+  background: #f5f5f5;
+}
+
+.category-item {
+  padding: 30rpx 20rpx;
+  font-size: 26rpx;
+  color: #333;
+  text-align: center;
+  border-bottom: 1rpx solid #e8e8e8;
+  transition: all 0.3s;
+}
+
+.category-item.active {
+  background: #fff;
+  color: #ff6b6b;
+  font-weight: 600;
+  position: relative;
+}
+
+.category-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6rpx;
+  height: 30rpx;
+  background: #ff6b6b;
+  border-radius: 0 4rpx 4rpx 0;
+}
+
+.category-right {
+  flex: 1;
+  height: 100%;
+  padding: 20rpx;
+  background: #fff;
+}
+
+.sub-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.sub-category-item {
+  padding: 12rpx 30rpx;
+  background: #f5f5f5;
+  border-radius: 40rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.sub-category-item.active {
+  background: linear-gradient(90deg, #ff6b6b 0%, #feca57 100%);
+  color: #fff;
+}
+
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.product-item {
+  width: 340rpx;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12rpx;
+  background: #fff;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+}
+
+.product-cover {
+  width: 100%;
+  height: 340rpx;
+  background: #f5f5f5;
+}
+
+.product-info {
+  padding: 20rpx;
+}
+
+.product-name {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+}
+
+.product-price {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #ff6b6b;
+}
+
+.product-tag {
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  padding: 4rpx 12rpx;
+  background: linear-gradient(90deg, #ff6b6b 0%, #feca57 100%);
+  border-radius: 4rpx;
+}
+
+.product-tag text {
+  font-size: 20rpx;
+  color: #fff;
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300rpx;
+  color: #999;
+  font-size: 28rpx;
+}

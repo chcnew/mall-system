@@ -1,0 +1,68 @@
+<!--pages/cart/index.wxml-->
+<view class="container">
+  <view wx:if="{{loading}}" style="padding: 100rpx; text-align: center; color: #999;">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:elif="{{cartList.length === 0}}" class="empty-cart">
+    <view class="empty-placeholder">🛒</view>
+    <text class="empty-text">购物车还是空的</text>
+    <view class="empty-actions">
+      <button class="btn btn-primary" bindtap="onCheckout">去逛逛</button>
+    </view>
+  </view>
+
+  <view wx:else class="cart-content">
+    <view class="toolbar">
+      <view class="select-all" bindtap="onSelectAll">
+        <view class="checkbox {{selectAll ? 'checked' : ''}}">
+          <text wx:if="{{selectAll}}">✓</text>
+        </view>
+        <text class="select-text">全选</text>
+      </view>
+      <view class="toolbar-actions" wx:if="{{!editMode}}">
+        <text class="edit-text" bindtap="onEditMode">编辑</text>
+      </view>
+    </view>
+
+    <view class="cart-list">
+      <view
+        class="cart-item"
+        wx:for="{{cartList}}"
+        wx:key="id"
+        wx:if="{{!editMode}}"
+      >
+        <view class="item-checkbox" bindtap="onItemSelect" data-id="{{item.id}}">
+          <view class="checkbox {{item.selected ? 'checked' : ''}}">
+            <text wx:if="{{item.selected}}">✓</text>
+          </view>
+        </view>
+
+        <view class="item-product-info" bindtap="onCardClick" data-id="{{item.product_id}}">
+          <text class="item-name">{{item.product.name || '商品名称'}}</text>
+          <text class="item-price">¥{{item.price}}</text>
+        </view>
+
+        <view class="quantity-control">
+          <view class="quantity-btn" bindtap="onDecrease" data-id="{{item.id}}">
+            <text>-</text>
+          </view>
+          <view class="quantity-value">{{item.quantity}}</view>
+          <view class="quantity-btn" bindtap="onIncrease" data-id="{{item.id}}">
+            <text>+</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-bar" wx:if="{{cartList.length > 0 && !editMode}}">
+    <view class="bottom-left">
+      <text class="selected-count">已选 {{totalCount}} 件</text>
+      <text class="total-price">合计：¥{{totalPrice}}</text>
+    </view>
+    <view class="bottom-right">
+      <button class="btn btn-primary checkout-btn" bindtap="onCheckout">结算</button>
+    </view>
+  </view>
+</view>

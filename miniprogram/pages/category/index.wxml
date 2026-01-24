@@ -1,0 +1,50 @@
+<view class="category">
+  <view wx:if="{{loading}}" class="loading-wrapper">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:else class="content">
+    <scroll-view class="category-left" scroll-y>
+      <view 
+        class="category-item {{selectedCategory === item.id ? 'active' : ''}}" 
+        wx:for="{{categories}}" 
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onCategoryClick"
+      >
+        <text>{{item.name}}</text>
+      </view>
+    </scroll-view>
+
+    <scroll-view class="category-right" scroll-y>
+      <view wx:if="{{subCategories.length > 0}}" class="sub-categories">
+        <view 
+          class="sub-category-item {{selectedSubCategory === item.id ? 'active' : ''}}"
+          wx:for="{{subCategories}}" 
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onSubCategoryClick"
+        >
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+
+      <view class="products">
+        <view class="product-item" wx:for="{{products}}" wx:key="id" data-id="{{item.id}}" bindtap="onProductClick">
+          <image class="product-cover" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="product-info">
+            <view class="product-name">{{item.name}}</view>
+            <view class="product-price">¥{{item.price}}</view>
+          </view>
+          <view wx:if="{{item.isHot || item.isNew}}" class="product-tag">
+            <text>{{item.isHot ? '热销' : '新品'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{products.length === 0}}" class="empty">
+        <text>暂无商品</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>

@@ -1,0 +1,66 @@
+<view class="favorite">
+  <view wx:if="{{loading}}" class="loading-wrapper">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:elif="{{favorites.length === 0}}" class="empty">
+    <image class="empty-icon" src="/images/empty-favorite.png"></image>
+    <text class="empty-text">暂无收藏</text>
+  </view>
+
+  <view wx:else class="content">
+    <view class="toolbar">
+      <text class="count">共{{favorites.length}}件商品</text>
+      <text class="edit-btn" bindtap="{{editing ? 'onFinishEdit' : 'onEdit'}}">
+        {{editing ? '完成' : '编辑'}}
+      </text>
+    </view>
+
+    <view class="product-list">
+      <view 
+        class="product-item {{selectedIds.includes(item.id) ? 'selected' : ''}}" 
+        wx:for="{{favorites}}" 
+        wx:key="id"
+      >
+        <view wx:if="{{editing}}" class="checkbox" bindtap="onToggleSelect" data-id="{{item.id}}">
+          <view wx:if="{{selectedIds.includes(item.id)}}" class="checkbox-checked"></view>
+        </view>
+
+        <image 
+          class="product-cover" 
+          src="{{item.cover}}" 
+          mode="aspectFill"
+          bindtap="onProductClick"
+          data-id="{{item.product_id}}"
+        ></image>
+
+        <view class="product-info" bindtap="onProductClick" data-id="{{item.product_id}}">
+          <view class="product-name">{{item.name}}</view>
+          <view class="product-meta">
+            <text wx:if="{{item.original_price > item.price}}" class="original-price">
+              ¥{{item.original_price}}
+            </text>
+            <text class="price">¥{{item.price}}</text>
+            <text class="sales">已售{{item.sales}}</text>
+          </view>
+          <view class="product-actions">
+            <view 
+              class="add-cart-btn" 
+              bindtap="onAddToCart"
+              catchtap="onAddToCart"
+              data-id="{{item.id}}"
+            >
+              <text>加入购物车</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{editing}}" class="delete-bar">
+      <view class="delete-btn" bindtap="onDeleteSelected">
+        <text>删除选中</text>
+      </view>
+    </view>
+  </view>
+</view>

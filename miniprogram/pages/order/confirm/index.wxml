@@ -1,0 +1,100 @@
+<view class="order-confirm">
+  <view wx:if="{{loading}}" class="loading-wrapper">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:else class="content">
+    <view class="address-card" bindtap="onAddressClick">
+      <view wx:if="{{address}}" class="address-info">
+        <view class="address-header">
+          <text class="name">{{address.name}}</text>
+          <text class="phone">{{address.phone}}</text>
+          <text wx:if="{{address.isDefault}}" class="default-tag">默认</text>
+        </view>
+        <view class="address-detail">
+          <text>{{address.province}}{{address.city}}{{address.district}}{{address.detail}}</text>
+        </view>
+      </view>
+      <view wx:else class="no-address">
+        <text>请选择收货地址</text>
+      </view>
+      <view class="arrow-right">›</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">商品清单</view>
+      <view class="product-list">
+        <view class="product-item" wx:for="{{products}}" wx:key="id">
+          <image class="product-cover" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="product-info">
+            <view class="product-name">{{item.name}}</view>
+            <view class="product-sku">{{item.sku_name}}</view>
+            <view class="product-bottom">
+              <text class="product-price">¥{{item.price}}</text>
+              <text class="product-quantity">x{{item.quantity}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">优惠券</view>
+      <view class="coupon-cell" bindtap="onCouponClick">
+        <view wx:if="{{selectedCoupon}}" class="coupon-selected">
+          <text class="coupon-name">{{selectedCoupon.name}}</text>
+          <text class="coupon-amount">-¥{{selectedCoupon.amount}}</text>
+        </view>
+        <view wx:else class="coupon-unselected">
+          <text class="coupon-count">{{availableCoupons.length}}张可用</text>
+        </view>
+        <view wx:if="{{selectedCoupon}}" class="remove-btn" bindtap="onRemoveCoupon" catchtap="onRemoveCoupon">
+          <text>✕</text>
+        </view>
+        <view wx:else class="arrow-right">›</view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">订单备注</view>
+      <view class="remark-input">
+        <textarea 
+          class="remark-textarea" 
+          placeholder="选填，对本次订单的说明" 
+          value="{{remark}}" 
+          bindinput="onRemarkChange"
+          maxlength="200"
+        ></textarea>
+      </view>
+    </view>
+
+    <view class="price-info">
+      <view class="price-item">
+        <text class="label">商品总额</text>
+        <text class="value">¥{{subtotal}}</text>
+      </view>
+      <view class="price-item">
+        <text class="label">运费</text>
+        <text class="value">{{freightAmount > 0 ? '¥' + freightAmount : '免运费'}}</text>
+      </view>
+      <view wx:if="{{discountAmount > 0}}" class="price-item discount">
+        <text class="label">优惠券优惠</text>
+        <text class="value">-¥{{discountAmount}}</text>
+      </view>
+    </view>
+
+    <view class="submit-bar">
+      <view class="price-wrapper">
+        <text class="price-label">合计：</text>
+        <text class="price-amount">¥{{totalAmount}}</text>
+      </view>
+      <view 
+        class="submit-btn {{submitting ? 'disabled' : ''}}" 
+        bindtap="onSubmitOrder"
+      >
+        <text wx:if="{{!submitting}}">提交订单</text>
+        <text wx:else>提交中...</text>
+      </view>
+    </view>
+  </view>
+</view>
