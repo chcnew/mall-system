@@ -1,12 +1,12 @@
 from pydantic import BaseModel, Field
-from typing import Optional, List
+from typing import Optional, List, Any
 from datetime import datetime
 
 
 class ResponseModel(BaseModel):
     code: int = 0
     message: str = "success"
-    data: Optional[any] = None
+    data: Optional[Any] = None
 
     class Config:
         from_attributes = True

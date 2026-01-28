@@ -4,7 +4,7 @@ from sqlalchemy import select, delete
 from app.core.deps import get_current_user
 from app.database import get_db
 from app.models import User, UserAddress
-from app.schemas import UserProfile, UserAddressCreate, UserAddressUpdate
+from app.schemas import UserProfile, UserAddressUpdate
 
 router = APIRouter()
 

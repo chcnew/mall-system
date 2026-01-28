@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.v1 import api as api_v1
-from app.api.admin import api as api_admin
+from app.api.v1 import router as api_v1
+from app.api.admin import router as api_admin
 from app.core.config import settings
 from app.core.exceptions import register_exception_handlers
 
@@ -23,8 +23,8 @@ app.add_middleware(
 
 register_exception_handlers(app)
 
-app.include_router(api_v1.router, prefix="/api/v1")
-app.include_router(api_admin.router, prefix="/api/admin")
+app.include_router(api_v1, prefix="/api/v1")
+app.include_router(api_admin, prefix="/api/admin")
 
 
 @app.get("/")

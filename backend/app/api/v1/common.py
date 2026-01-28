@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, Depends
 from app.models import Banner
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
