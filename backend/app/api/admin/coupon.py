@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete, func
 from app.core.deps import get_current_admin
+from app.core.response import success_response
 from app.database import get_db
 from app.models import CouponTemplate, UserCoupon
 from app.schemas import CouponCreate, CouponUpdate
@@ -36,28 +37,30 @@ async def get_coupons(
     )
     coupons = result.scalars().all()
 
-    return {
-        "items": [
-            {
-                "id": c.id,
-                "name": c.name,
-                "type": c.type,
-                "value": float(c.value),
-                "min_amount": float(c.min_amount),
-                "total_count": c.total_count,
-                "remain_count": c.remain_count,
-                "per_limit": c.per_limit,
-                "start_time": c.start_time.isoformat() if c.start_time else None,
-                "end_time": c.end_time.isoformat() if c.end_time else None,
-                "status": c.status,
-                "created_at": c.created_at.isoformat() if c.created_at else None,
-            }
-            for c in coupons
-        ],
-        "total": total,
-        "page": page,
-        "size": size,
-    }
+    return success_response(
+        {
+            "items": [
+                {
+                    "id": c.id,
+                    "name": c.name,
+                    "type": c.type,
+                    "value": float(c.value),
+                    "min_amount": float(c.min_amount),
+                    "total_count": c.total_count,
+                    "remain_count": c.remain_count,
+                    "per_limit": c.per_limit,
+                    "start_time": c.start_time.isoformat() if c.start_time else None,
+                    "end_time": c.end_time.isoformat() if c.end_time else None,
+                    "status": c.status,
+                    "created_at": c.created_at.isoformat() if c.created_at else None,
+                }
+                for c in coupons
+            ],
+            "total": total,
+            "page": page,
+            "size": size,
+        }
+    )
 
 
 @router.post("")
@@ -82,7 +85,7 @@ async def create_coupon(
     await db.commit()
     await db.refresh(coupon)
 
-    return {"id": coupon.id, "name": coupon.name}
+    return success_response({"id": coupon.id, "name": coupon.name})
 
 
 @router.put("/{coupon_id}")
@@ -107,7 +110,7 @@ async def update_coupon(
 
     await db.commit()
 
-    return {"message": "更新成功"}
+    return success_response({"message": "更新成功"})
 
 
 @router.delete("/{coupon_id}")
@@ -127,7 +130,7 @@ async def delete_coupon(
 
     await db.commit()
 
-    return {"message": "删除成功"}
+    return success_response({"message": "删除成功"})
 
 
 @router.get("/user-coupons")
@@ -153,21 +156,25 @@ async def get_user_coupons(
     )
     user_coupons = result.scalars().all()
 
-    return {
-        "items": [
-            {
-                "id": uc.id,
-                "user_id": uc.user_id,
-                "user_nickname": None,
-                "coupon_id": uc.coupon_id,
-                "coupon_name": None,
-                "status": uc.status,
-                "used_time": uc.used_time.isoformat() if uc.used_time else None,
-                "expire_time": uc.expire_time.isoformat() if uc.expire_time else None,
-            }
-            for uc in user_coupons
-        ],
-        "total": total,
-        "page": page,
-        "size": size,
-    }
+    return success_response(
+        {
+            "items": [
+                {
+                    "id": uc.id,
+                    "user_id": uc.user_id,
+                    "user_nickname": None,
+                    "coupon_id": uc.coupon_id,
+                    "coupon_name": None,
+                    "status": uc.status,
+                    "used_time": uc.used_time.isoformat() if uc.used_time else None,
+                    "expire_time": uc.expire_time.isoformat()
+                    if uc.expire_time
+                    else None,
+                }
+                for uc in user_coupons
+            ],
+            "total": total,
+            "page": page,
+            "size": size,
+        }
+    )

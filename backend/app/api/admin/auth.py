@@ -28,13 +28,17 @@ async def admin_login(data: AdminLogin, db: AsyncSession = Depends(get_db)):
     token = create_access_token(data={"sub": admin.id, "role": "admin"})
 
     return {
-        "token": token,
-        "admin": {
-            "id": admin.id,
-            "username": admin.username,
-            "nickname": admin.nickname,
-            "avatar": admin.avatar,
-            "role": admin.role,
+        "code": 0,
+        "message": "登录成功",
+        "data": {
+            "token": token,
+            "admin": {
+                "id": admin.id,
+                "username": admin.username,
+                "nickname": admin.nickname,
+                "avatar": admin.avatar,
+                "role": admin.role,
+            },
         },
     }
 
@@ -54,14 +58,22 @@ async def get_admin_info(
         )
 
     return {
-        "id": admin.id,
-        "username": admin.username,
-        "nickname": admin.nickname,
-        "avatar": admin.avatar,
-        "role": admin.role,
+        "code": 0,
+        "message": "success",
+        "data": {
+            "id": admin.id,
+            "username": admin.username,
+            "nickname": admin.nickname,
+            "avatar": admin.avatar,
+            "role": admin.role,
+        },
     }
 
 
 @router.post("/logout")
 async def admin_logout():
-    return {"message": "退出成功"}
+    return {
+        "code": 0,
+        "message": "退出成功",
+        "data": None,
+    }

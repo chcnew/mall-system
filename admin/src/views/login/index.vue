@@ -50,15 +50,25 @@ const rules = {
 }
 
 const handleLogin = async () => {
-  const valid = await formRef.value.validate().catch(() => false)
-  if (!valid) return
+  console.log('点击登录按钮', loginForm)
+
+  try {
+    await formRef.value.validate()
+    console.log('表单验证通过')
+  } catch (error) {
+    console.log('表单验证失败', error)
+    ElMessage.error('请填写完整的登录信息')
+    return
+  }
 
   loading.value = true
   try {
+    console.log('开始登录请求')
     await userStore.login(loginForm)
     ElMessage.success('登录成功')
     router.push('/')
   } catch (error) {
+    console.log('登录失败', error)
     ElMessage.error('登录失败，请检查用户名和密码')
   } finally {
     loading.value = false

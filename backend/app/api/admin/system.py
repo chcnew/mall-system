@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete
 from app.core.deps import get_current_admin
+from app.core.response import success_response
 from app.database import get_db
 from app.models import Banner, SystemConfig
 from app.schemas import BannerCreate, BannerUpdate
@@ -16,19 +17,21 @@ async def get_banners(
     result = await db.execute(select(Banner).order_by(Banner.sort))
     banners = result.scalars().all()
 
-    return [
-        {
-            "id": b.id,
-            "title": b.title,
-            "image": b.image,
-            "link_type": b.link_type,
-            "link_value": b.link_value,
-            "sort": b.sort,
-            "status": b.status,
-            "created_at": b.created_at.isoformat() if b.created_at else None,
-        }
-        for b in banners
-    ]
+    return success_response(
+        [
+            {
+                "id": b.id,
+                "title": b.title,
+                "image": b.image,
+                "link_type": b.link_type,
+                "link_value": b.link_value,
+                "sort": b.sort,
+                "status": b.status,
+                "created_at": b.created_at.isoformat() if b.created_at else None,
+            }
+            for b in banners
+        ]
+    )
 
 
 @router.post("")
@@ -49,7 +52,7 @@ async def create_banner(
     await db.commit()
     await db.refresh(banner)
 
-    return {"id": banner.id}
+    return success_response({"id": banner.id})
 
 
 @router.put("/{banner_id}")
@@ -72,7 +75,7 @@ async def update_banner(
 
     await db.commit()
 
-    return {"message": "更新成功"}
+    return success_response({"message": "更新成功"})
 
 
 @router.delete("/{banner_id}")
@@ -90,7 +93,7 @@ async def delete_banner(
 
     await db.commit()
 
-    return {"message": "删除成功"}
+    return success_response({"message": "删除成功"})
 
 
 config_router = APIRouter()
@@ -103,15 +106,17 @@ async def get_configs(
     result = await db.execute(select(SystemConfig))
     configs = result.scalars().all()
 
-    return [
-        {
-            "id": c.id,
-            "config_key": c.config_key,
-            "config_value": c.config_value,
-            "remark": c.remark,
-        }
-        for c in configs
-    ]
+    return success_response(
+        [
+            {
+                "id": c.id,
+                "config_key": c.config_key,
+                "config_value": c.config_value,
+                "remark": c.remark,
+            }
+            for c in configs
+        ]
+    )
 
 
 @config_router.put("")
@@ -136,4 +141,4 @@ async def update_config(
 
     await db.commit()
 
-    return {"message": "更新成功"}
+    return success_response({"message": "更新成功"})

@@ -4,7 +4,7 @@ router = APIRouter()
 
 from . import auth, product, order, user, coupon, statistics, system
 
-router.include_router(auth.router, prefix="/auth", tags=["管理员认证"])
+router.include_router(auth.router, tags=["管理员认证"])
 router.include_router(product.router, prefix="/products", tags=["商品管理"])
 router.include_router(product.category_router, prefix="/categories", tags=["分类管理"])
 router.include_router(order.router, prefix="/orders", tags=["订单管理"])

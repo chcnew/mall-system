@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.deps import get_current_admin
+from app.core.response import success_response
 from app.database import get_db
 from sqlalchemy import select, func, and_
 from app.models import Order, Product
@@ -38,12 +39,14 @@ async def get_overview(
 
     product_views = 0
 
-    return {
-        "today_orders": today_orders,
-        "today_sales": today_sales,
-        "new_users": new_users,
-        "product_views": product_views,
-    }
+    return success_response(
+        {
+            "today_orders": today_orders,
+            "today_sales": today_sales,
+            "new_users": new_users,
+            "product_views": product_views,
+        }
+    )
 
 
 @router.get("/sales")
@@ -75,7 +78,7 @@ async def get_sales_trend(
         for row in result.all()
     ]
 
-    return sales_data
+    return success_response(sales_data)
 
 
 @router.get("/top-products")
@@ -106,4 +109,4 @@ async def get_top_products(
         for row in result.all()
     ]
 
-    return top_products
+    return success_response(top_products)

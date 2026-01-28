@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete, func
 from app.core.deps import get_current_admin
+from app.core.response import success_response
 from app.database import get_db
 from app.models import Product
 from app.schemas import ProductCreate, ProductUpdate, ProductListParams
@@ -42,32 +43,36 @@ async def get_products(
     )
     products = result.scalars().all()
 
-    return {
-        "items": [
-            {
-                "id": p.id,
-                "category_id": p.category_id,
-                "name": p.name,
-                "subtitle": p.subtitle,
-                "cover": p.cover,
-                "images": p.images or [],
-                "description": p.description,
-                "price": float(p.price),
-                "original_price": float(p.original_price) if p.original_price else None,
-                "stock": p.stock,
-                "sales": p.sales,
-                "status": p.status,
-                "is_hot": bool(p.is_hot),
-                "is_new": bool(p.is_new),
-                "sort": p.sort,
-                "created_at": p.created_at.isoformat() if p.created_at else None,
-            }
-            for p in products
-        ],
-        "total": total,
-        "page": params.page,
-        "size": params.size,
-    }
+    return success_response(
+        {
+            "items": [
+                {
+                    "id": p.id,
+                    "category_id": p.category_id,
+                    "name": p.name,
+                    "subtitle": p.subtitle,
+                    "cover": p.cover,
+                    "images": p.images or [],
+                    "description": p.description,
+                    "price": float(p.price),
+                    "original_price": float(p.original_price)
+                    if p.original_price
+                    else None,
+                    "stock": p.stock,
+                    "sales": p.sales,
+                    "status": p.status,
+                    "is_hot": bool(p.is_hot),
+                    "is_new": bool(p.is_new),
+                    "sort": p.sort,
+                    "created_at": p.created_at.isoformat() if p.created_at else None,
+                }
+                for p in products
+            ],
+            "total": total,
+            "page": params.page,
+            "size": params.size,
+        }
+    )
 
 
 @router.get("/{product_id}")
@@ -82,26 +87,30 @@ async def get_product(
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="商品不存在")
 
-    return {
-        "id": product.id,
-        "category_id": product.category_id,
-        "name": product.name,
-        "subtitle": product.subtitle,
-        "cover": product.cover,
-        "images": product.images or [],
-        "description": product.description,
-        "price": float(product.price),
-        "original_price": float(product.original_price)
-        if product.original_price
-        else None,
-        "stock": product.stock,
-        "sales": product.sales,
-        "status": product.status,
-        "is_hot": bool(product.is_hot),
-        "is_new": bool(product.is_new),
-        "sort": product.sort,
-        "created_at": product.created_at.isoformat() if product.created_at else None,
-    }
+    return success_response(
+        {
+            "id": product.id,
+            "category_id": product.category_id,
+            "name": product.name,
+            "subtitle": product.subtitle,
+            "cover": product.cover,
+            "images": product.images or [],
+            "description": product.description,
+            "price": float(product.price),
+            "original_price": float(product.original_price)
+            if product.original_price
+            else None,
+            "stock": product.stock,
+            "sales": product.sales,
+            "status": product.status,
+            "is_hot": bool(product.is_hot),
+            "is_new": bool(product.is_new),
+            "sort": product.sort,
+            "created_at": product.created_at.isoformat()
+            if product.created_at
+            else None,
+        }
+    )
 
 
 @router.post("")
@@ -129,7 +138,7 @@ async def create_product(
     await db.commit()
     await db.refresh(product)
 
-    return {"id": product.id, "name": product.name}
+    return success_response({"id": product.id, "name": product.name})
 
 
 @router.put("/{product_id}")
@@ -155,7 +164,7 @@ async def update_product(
 
     await db.commit()
 
-    return {"message": "更新成功"}
+    return success_response({"message": "更新成功"})
 
 
 @router.delete("/{product_id}")
@@ -171,7 +180,7 @@ async def delete_product(
 
     await db.commit()
 
-    return {"message": "删除成功"}
+    return success_response({"message": "删除成功"})
 
 
 category_router = APIRouter()
@@ -186,17 +195,19 @@ async def get_categories(
     result = await db.execute(select(Category).order_by(Category.sort))
     categories = result.scalars().all()
 
-    return [
-        {
-            "id": c.id,
-            "parent_id": c.parent_id,
-            "name": c.name,
-            "icon": c.icon,
-            "sort": c.sort,
-            "status": c.status,
-        }
-        for c in categories
-    ]
+    return success_response(
+        [
+            {
+                "id": c.id,
+                "parent_id": c.parent_id,
+                "name": c.name,
+                "icon": c.icon,
+                "sort": c.sort,
+                "status": c.status,
+            }
+            for c in categories
+        ]
+    )
 
 
 @category_router.post("")
@@ -217,7 +228,7 @@ async def create_category(
     db.add(category)
     await db.commit()
 
-    return {"id": category.id}
+    return success_response({"id": category.id})
 
 
 @category_router.put("/{category_id}")
@@ -241,7 +252,7 @@ async def update_category(
 
     await db.commit()
 
-    return {"message": "更新成功"}
+    return success_response({"message": "更新成功"})
 
 
 @category_router.delete("/{category_id}")
