@@ -5,7 +5,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.database import AsyncSessionLocal
+from app.database import AsyncSessionLocal, dispose_engine
 from app.core.security import get_password_hash
 from app.models import Admin
 
@@ -26,7 +26,10 @@ async def create_admin():
         print("用户名: admin")
         print("密码: admin123")
     finally:
-        await db.close()
+        try:
+            await db.close()
+        finally:
+            await dispose_engine()
 
 
 if __name__ == "__main__":

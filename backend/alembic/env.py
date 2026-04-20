@@ -1,16 +1,16 @@
+import os
+import sys
+
+# 必须在导入 app 之前：保证 backend 根目录在 PYTHONPATH 中
+_backend_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _backend_root not in sys.path:
+    sys.path.insert(0, _backend_root)
+
 from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 from app.database import Base
 from app.models import *
-import sys
-import os
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 config = context.config
 

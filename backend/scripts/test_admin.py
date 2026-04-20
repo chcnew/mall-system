@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 import sys
 import os
-import warnings
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 import asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from app.database import AsyncSessionLocal
+from app.database import AsyncSessionLocal, dispose_engine
 from app.core.security import verify_password
 from app.models import Admin
 
@@ -34,11 +31,11 @@ async def test_admin():
         else:
             print("❌ 密码验证失败")
     finally:
-        await db.close()
+        try:
+            await db.close()
+        finally:
+            await dispose_engine()
 
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(test_admin())
-    except RuntimeError:
-        pass
+    asyncio.run(test_admin())

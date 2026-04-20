@@ -21,6 +21,11 @@ AsyncSessionLocal = async_sessionmaker(
 Base = declarative_base()
 
 
+async def dispose_engine() -> None:
+    """关闭异步连接池。脚本在 asyncio.run 结束前、应用在进程退出前应调用，避免 aiomysql 在已关闭的 loop 上清理连接。"""
+    await engine.dispose()
+
+
 async def get_db():
     db = AsyncSessionLocal()
     try:
